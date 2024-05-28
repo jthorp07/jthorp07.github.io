@@ -16,7 +16,7 @@ var PageController = /** @class */ (function () {
                 break;
             default:
                 console.log("def");
-                this.isIndex = false;
+                this.isIndex = true;
                 this.currentPage = new PageNotFoundPage();
                 break;
         }
