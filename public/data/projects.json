@@ -1,0 +1,20 @@
+{
+    "projects": [
+        {
+            "id": "pwg",
+            "title": "WorldGenerator - Godot Plugin",
+            "description": "A plugin that adds procedural world generation utilities to Godot with an accompanying dock for configuration in the Godot editor.",
+            "details": "A plugin that adds procedural world generation utilities to Godot with an accompanying dock for configuration in the Godot editor.",
+            "image": "../assets/godot_pwg_proj.png",
+            "url": "#"
+        },
+        {
+            "id": "jerrybot",
+            "title": "JerryBot",
+            "description": "A Discord bot used to help manage the discord server for content creator w0rthyTV.",
+            "details": "A Discord bot used to help manage the discord server for content creator w0rthyTV.",
+            "image": "../assets/jerrybot_proj.png",
+            "url": "#"
+        }
+    ]
+}
