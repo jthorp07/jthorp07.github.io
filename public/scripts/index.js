@@ -1,66 +1,61 @@
 "use strict";
-var PageController = /** @class */ (function () {
-    function PageController() {
-        var pageId = document.body.id;
-        console.log("Constructor");
-        switch (pageId) {
-            case "landingPage":
-                console.log("index");
-                this.isIndex = true;
-                this.currentPage = new HomePage();
-                break;
-            case "projectsPage":
-                console.log("proj");
-                this.isIndex = false;
-                this.currentPage = new ProjectsPage();
-                break;
-            default:
-                console.log("def");
-                this.isIndex = true;
-                this.currentPage = new PageNotFoundPage();
-                break;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+function loadProjects() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch('../data/projects.json');
+        const data = yield response.json();
+        const projects = data.projects;
+        const projectsContainer = document.getElementById('projects-container');
+        if (projectsContainer) {
+            projects.forEach(project => {
+                const projectElement = document.createElement('div');
+                projectElement.classList.add('project-card');
+                projectElement.innerHTML = `
+                <img src="${project.image}" alt="${project.title}" class="project-card-image">
+                <div class="project-card-content">
+                    <h3 class="project-card-title">${project.title}</h3>
+                    <a href="project-details.html?id=${project.id}" class="project-card-button">View Details</a>
+                </div>
+            `;
+                projectsContainer.appendChild(projectElement);
+            });
         }
-        this.buildNavLinks();
-    }
-    PageController.prototype.buildNavLinks = function () {
-        var _this = this;
-        this.homeNavButton = document.getElementById("homeBtn");
-        this.projectsNavButton = document.getElementById("projectsBtn");
-        this.resumeNavButton = document.getElementById("resumeBtn");
-        this.homeNavButton.onclick = function () {
-            window.location.href = ".".concat(_this.isIndex ? "" : "./..", "/index.html");
-            _this.isIndex = true;
-        };
-        this.projectsNavButton.onclick = function () {
-            window.location.href = ".".concat(_this.isIndex ? "/public/pages" : "", "/projects.html");
-            _this.isIndex = false;
-        };
-        this.resumeNavButton.onclick = function () {
-            window.location.href = ".".concat(_this.isIndex ? "/public/pages" : "", "/resume.html");
-            _this.isIndex = false;
-        };
-    };
-    return PageController;
-}());
-var HomePage = /** @class */ (function () {
-    function HomePage() {
-    }
-    return HomePage;
-}());
-var ProjectsPage = /** @class */ (function () {
-    function ProjectsPage() {
-    }
-    return ProjectsPage;
-}());
-var ResumePage = /** @class */ (function () {
-    function ResumePage() {
-    }
-    return ResumePage;
-}());
-var PageNotFoundPage = /** @class */ (function () {
-    function PageNotFoundPage() {
-    }
-    return PageNotFoundPage;
-}());
-console.log("File ran");
-new PageController();
+    });
+}
+function loadProjectDetails() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+        if (projectId) {
+            const response = yield fetch('../data/projects.json');
+            const data = yield response.json();
+            const projects = data.projects;
+            const project = projects.find(p => p.id === projectId);
+            if (project) {
+                const titleElement = document.getElementById('project-detail-title');
+                const imageElement = document.getElementById('project-detail-image');
+                const descriptionElement = document.getElementById('project-detail-description');
+                if (titleElement)
+                    titleElement.textContent = project.title;
+                if (imageElement)
+                    imageElement.src = project.image;
+                if (descriptionElement)
+                    descriptionElement.textContent = project.details;
+            }
+        }
+    });
+}
+if (document.getElementById('projects-container')) {
+    loadProjects();
+}
+else if (document.getElementById('project-detail-title')) {
+    loadProjectDetails();
+}
